@@ -17,8 +17,8 @@ word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
 response = requests.get(word_site)
 WORDS = response.content.splitlines()
 
-window = window
-user_entry = tk.Entry(window)
+val = tk.StringVar()
+user_entry = tk.Entry(window, textvariable=val)
 user_entry.grid(row=2, column=1, pady=50)
 user_entry.focus()
 words = tk.Label(window, text='Ready? Click start')
@@ -46,11 +46,6 @@ def tksleep(t):
     window.wait_variable(var)
 
 
-def new_word():
-    user_entry.delete(0)
-    words.config(text=random.choice(WORDS))
-
-
 def start():
     total_time = int(timer_text['text'])
     print(total_time)
@@ -61,10 +56,11 @@ def start():
         tksleep(1)
         i += 1
         timer_text['text'] = total_time - i
-        print(f"b'{user_entry.get()}'")
+        print(f"b'{val.get()}'")
         print(words['text'])
-        if f"b'{user_entry.get()}'" == words['text']:
-            new_word()
+        if f"b'{val.get()}'" == words['text']:
+            user_entry.delete(0)
+            words.config(text=random.choice(WORDS))
             word_count += 1
     words.config(text=f"Time's up!You type at {int(word_count/total_time)} words per minute.")
 
