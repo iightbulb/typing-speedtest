@@ -61,7 +61,6 @@ def start():
         tksleep(1)
         i += 1
         timer_text['text'] = total_time - i
-        print(i)
         print(f"b'{user_entry.get()}'")
         print(words['text'])
         if f"b'{user_entry.get()}'" == words['text']:
