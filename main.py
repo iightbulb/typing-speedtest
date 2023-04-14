@@ -21,7 +21,7 @@ val = tk.StringVar()
 user_entry = tk.Entry(window, textvariable=val)
 user_entry.grid(row=2, column=1, pady=50)
 user_entry.focus()
-words = tk.Label(window, text='Ready? Click start')
+words = tk.Label(window, text='Choose the duration of the test below. When ready, click Start.')
 words.grid(row=0, column=1)
 timer_text = tk.Label(window, text=30)
 timer_text.grid(row=4, column=1, pady=10)
@@ -46,6 +46,16 @@ def tksleep(t):
     window.wait_variable(var)
 
 
+def correct_word(*args):
+    if f" b'{val.get()}'" == words['text']:
+        print('delete user entry')
+        user_entry.delete(0)
+        words.config(text=random.choice(WORDS))
+        return True
+    else:
+        return False
+
+
 def start():
     total_time = int(timer_text['text'])
     print(total_time)
@@ -53,15 +63,13 @@ def start():
     i = 0
     word_count = 0
     while i < total_time:
+        if val.trace('w', correct_word):
+            word_count += 1
         tksleep(1)
         i += 1
         timer_text['text'] = total_time - i
         print(f"b'{val.get()}'")
         print(words['text'])
-        if f"b'{val.get()}'" == words['text']:
-            user_entry.delete(0)
-            words.config(text=random.choice(WORDS))
-            word_count += 1
     words.config(text=f"Time's up!You type at {int(word_count/total_time)} words per minute.")
 
 
